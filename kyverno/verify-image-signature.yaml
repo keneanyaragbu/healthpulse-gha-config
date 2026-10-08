@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-healthpulse-signature
+spec:
+  validationFailureAction: Enforce        # ENFORCE = reject unsigned (not just warn)
+  background: false
+  webhookTimeoutSeconds: 30
+  failurePolicy: Fail
+  rules:
+    - name: verify-cosign-signature
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - healthpulse-dev
+                - healthpulse-uat
+                - healthpulse-prod
+      verifyImages:
+        - imageReferences:
+            - "588738574057.dkr.ecr.us-east-1.amazonaws.com/healthpulse-backend*"
+          attestors:
+            - count: 1
+              entries:
+                - keys:
+                    publicKeys: |-
+                      -----BEGIN PUBLIC KEY-----
+                      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEizD8+c9PUUQwpuz9OAQwe6vlDTyO
+                      dBcailOL872HLQ68BFuI3x4ZTFQVzQlSaretfz1WjbuFhduG66WN4DxgaA==
+                      -----END PUBLIC KEY-----

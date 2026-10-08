@@ -1,20 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: healthpulse-dev
+  name: healthpulse-uat
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/keneanyaragbu/healthpulse-gha-config.git
     targetRevision: main
-    path: k8s/overlays/dev
+    path: k8s/overlays/uat
   destination:
     server: https://kubernetes.default.svc
-    namespace: healthpulse-dev
+    namespace: healthpulse-uat
   syncPolicy:
-    automated:            # DEV = auto-sync (your model: feature push → dev auto-deploys)
-      prune: true
-      selfHeal: true
+    # UAT = NO automated block → MANUAL sync (promotion gate via PR + manual sync)
     syncOptions:
       - CreateNamespace=true
