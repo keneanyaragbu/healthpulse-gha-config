@@ -4,9 +4,9 @@ kind: Kustomization
 resources:
   - shared/ingress.yaml
   - shared/namespace.yaml
-  - frontend/deployment.yaml
-  - frontend/service.yaml
-  - frontend/hpa.yaml
+  #- frontend/deployment.yaml
+  #- frontend/service.yaml
+  #- frontend/hpa.yaml
   - backend/deployment.yaml
   - backend/service.yaml
   - backend/servicemonitor.yaml
