@@ -20,7 +20,7 @@ spec:
                 - healthpulse-prod
       verifyImages:
         - imageReferences:
-            - "588738574057.dkr.ecr.us-east-1.amazonaws.com/healthpulse-backend*"
+            - "*" 
           attestors:
             - count: 1
               entries:

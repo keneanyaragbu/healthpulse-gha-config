@@ -1,0 +1,38 @@
+extraEnvs:
+  - name: SPLUNK_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: splunk-token
+        key: token
+
+config:
+  receivers:
+    otlp:
+      protocols:
+        http:
+          endpoint: 0.0.0.0:4318
+        grpc:
+          endpoint: 0.0.0.0:4317
+  exporters:
+    # traces -> Splunk Observability (us1)
+    sapm:
+      access_token: ${SPLUNK_TOKEN}
+      endpoint: "https://ingest.us1.signalfx.com/v2/trace"
+    # logs -> Splunk HEC-style (us1 log ingest)
+    splunk_hec/logs:
+      token: ${SPLUNK_TOKEN}
+      endpoint: "https://ingest.us1.signalfx.com/v1/log"
+      source: "otel"
+      sourcetype: "kube:container"
+  processors:
+    batch: {}
+  service:
+    pipelines:
+      traces:
+        receivers: [otlp]
+        processors: [batch]
+        exporters: [sapm]
+      logs:
+        receivers: [otlp]
+        processors: [batch]
+        exporters: [splunk_hec/logs]
