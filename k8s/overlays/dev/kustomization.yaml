@@ -9,7 +9,7 @@ resources:
 
 images:
   - name: 588738574057.dkr.ecr.us-east-1.amazonaws.com/healthpulse-backend
-    newTag: c25e24ff57ef1ad6382e18f903cde474960af4d9
+    newTag: 08110ae601f759b2751da0252366b7e3aedff6da
 
 patches:
   - target:
